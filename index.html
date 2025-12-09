@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Realistic 3D Flipbook</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        body {
+            font-family: "Poppins", sans-serif;
+            background-color: #2e3537;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .book {
+            width: 500px;
+            height: 700px;
+            position: relative;
+            transition-duration: 1s;
+            perspective: 2000px;
+        }
+        input {
+            display: none;
+        }
+        .cover, .back-cover {
+            background-color: #4173a5;
+            width: 100%;
+            height: 100%;
+            border-radius: 0 15px 15px 0;
+            box-shadow: 0 0 5px rgb(41, 41, 41);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transform-origin: center left;
+        }
+        .cover {
+            position: absolute;
+            z-index: 4;
+            transition: transform 1s;
+            background-image: url('https://source.unsplash.com/random/500x700/?book,front,cover');
+            background-size: cover;
+        }
+        .cover label {
+            width: 100%;
+            height: 100%;
+            cursor: pointer;
+        }
+        .back-cover {
+            position: relative;
+            z-index: -1;
+            background-image: url('https://source.unsplash.com/random/500x700/?book,back,cover');
+            background-size: cover;
+        }
+        .page {
+            position: absolute;
+            background-color: white;
+            width: 480px;
+            height: 680px;
+            border-radius: 0 15px 15px 0;
+            margin-top: 10px;
+            transform-origin: left;
+            transform-style: preserve-3d;
+            transform: rotateY(0deg);
+            transition-duration: 1.5s;
+        }
+        .page img {
+            width: 100%;
+            height: auto;
+            border-radius: 15px 0 0 15px;
+        }
+        .front-page {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            box-sizing: border-box;
+            padding: 1rem;
+            overflow: auto;
+        }
+        .back-page {
+            transform: rotateY(180deg);
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            z-index: 99;
+            box-sizing: border-box;
+            padding: 1rem;
+            overflow: auto;
+        }
+        .next, .prev {
+            position: absolute;
+            bottom: 1em;
+            cursor: pointer;
+            color: #333;
+            font-size: 24px;
+        }
+        .next {
+            right: 1em;
+        }
+        .prev {
+            left: 1em;
+        }
+        #page1 {
+            z-index: 3;
+        }
+        #page2 {
+            z-index: 2;
+        }
+        #page3 {
+            z-index: 1;
+        }
+        #checkbox-cover:checked ~ .book {
+            transform: translateX(250px);
+        }
+        #checkbox-cover:checked ~ .book .cover {
+            transition: transform 1.5s, z-index 0.5s 0.5s;
+            transform: rotateY(-180deg);
+            z-index: 1;
+        }
+        #checkbox-cover:checked ~ .book .page {
+            box-shadow: 0 0 3px rgb(99, 98, 98);
+        }
+        #checkbox-page1:checked ~ .book #page1 {
+            transform: rotateY(-180deg);
+            z-index: 2;
+        }
+        #checkbox-page2:checked ~ .book #page2 {
+            transform: rotateY(-180deg);
+            z-index: 3;
+        }
+    </style>
+</head>
+<body>
+    <input type="checkbox" id="checkbox-cover">
+    <input type="checkbox" id="checkbox-page1">
+    <input type="checkbox" id="checkbox-page2">
+    <div class="book">
+        <div class="cover">
+            <label for="checkbox-cover"></label>
+        </div>
+        <div class="page" id="page1">
+            <div class="front-page">
+                <h2>Demo Page 1 Front</h2>
+                <p>This is some demo text for the front of page 1. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+                <img src="https://source.unsplash.com/random/450x300/?nature" alt="Demo Nature Photo">
+                <p>More demo text: Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+                <label class="next" for="checkbox-page1"><i class="fas fa-chevron-right"></i></label>
+            </div>
+            <div class="back-page">
+                <h2>Demo Page 1 Back</h2>
+                <p>This is the back of page 1 with demo content. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p>
+                <img src="https://source.unsplash.com/random/450x300/?city" alt="Demo City Photo">
+                <label class="prev" for="checkbox-page1"><i class="fas fa-chevron-left"></i></label>
+            </div>
+        </div>
+        <div class="page" id="page2">
+            <div class="front-page">
+                <h2>Demo Page 2 Front</h2>
+                <p>Demo text for page 2 front: Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+                <img src="https://source.unsplash.com/random/450x300/?technology" alt="Demo Technology Photo">
+                <p>Additional text: Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                <label class="next" for="checkbox-page2"><i class="fas fa-chevron-right"></i></label>
+            </div>
+            <div class="back-page">
+                <h2>Demo Page 2 Back</h2>
+                <p>Back of page 2 demo: Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium.</p>
+                <img src="https://source.unsplash.com/random/450x300/?abstract" alt="Demo Abstract Photo">
+                <label class="prev" for="checkbox-page2"><i class="fas fa-chevron-left"></i></label>
+            </div>
+        </div>
+        <div class="page" id="page3">
+            <div class="front-page">
+                <h2>Demo Page 3 Front</h2>
+                <p>This is the last page with demo text. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit.</p>
+                <img src="https://source.unsplash.com/random/450x300/?space" alt="Demo Space Photo">
+                <p>Final demo paragraph: Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit.</p>
+                <!-- No next label -->
+            </div>
+            <div class="back-page">
+                <h2>Demo Page 3 Back (Optional)</h2>
+                <p>If needed, add content here. For now, a demo photo.</p>
+                <img src="https://source.unsplash.com/random/450x300/?art" alt="Demo Art Photo">
+            </div>
+        </div>
+        <div class="back-cover"></div>
+    </div>
+</body>
+</html>
